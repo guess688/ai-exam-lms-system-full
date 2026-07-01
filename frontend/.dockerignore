@@ -1,8 +1,15 @@
 .git
+.idea
+.vscode
 node_modules
 dist
+target
 .env.local
 .env.production.local
 logs
 *.log
+deploy/.env
+references
+external
+uploads
 .DS_Store

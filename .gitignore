@@ -5,6 +5,8 @@
 deploy/.env
 deploy/.env.*
 !deploy/.env.example
+deploy/images/*.tar
+deploy/images/*.tgz
 
 # Uploads and runtime data
 deploy/uploads/
