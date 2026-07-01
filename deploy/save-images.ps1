@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 
 $ProjectRoot = (Get-Location).Path
 $RequiredDirs = @('backend', 'frontend', 'deploy')
@@ -17,7 +17,7 @@ $Images = @(
     'mysql:8.0',
     'redis:7-alpine',
     'minio/minio:RELEASE.2024-07-16T23-46-41Z',
-    'minio/mc:RELEASE.2024-07-15T19-02-30Z'
+    'minio/mc:RELEASE.2025-03-12T17-29-24Z'
 )
 
 New-Item -ItemType Directory -Force -Path $ImagesDir | Out-Null
@@ -50,3 +50,4 @@ $SizeMb = [Math]::Round($Tar.Length / 1MB, 2)
 
 Write-Host "Image archive: $($Tar.FullName)"
 Write-Host "Archive size: $SizeMb MB"
+
