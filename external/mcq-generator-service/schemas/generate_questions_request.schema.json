@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "required": ["courseId", "chapterId", "knowledgePointId", "questionType", "difficulty", "count"],
+  "properties": {
+    "courseId": { "type": "integer" },
+    "chapterId": { "type": "integer" },
+    "knowledgePointId": { "type": "integer" },
+    "subject": { "type": "string" },
+    "questionType": { "enum": ["SINGLE", "MULTIPLE", "INDEFINITE", "JUDGE"] },
+    "difficulty": { "enum": ["EASY", "MEDIUM", "HARD"] },
+    "count": { "type": "integer", "minimum": 1, "maximum": 50 },
+    "optionCount": { "type": "integer", "minimum": 2, "maximum": 8 },
+    "correctAnswerCount": { "type": "integer", "minimum": 1, "maximum": 8 }
+  }
+}

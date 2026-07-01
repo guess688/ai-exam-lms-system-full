@@ -1,0 +1,11 @@
+{
+  "behaviorLevel": "GOOD",
+  "summary": "Learning activity is stable, but wrong-question correction needs improvement.",
+  "positiveSignals": ["Video progress is above 90%", "Tasks are usually submitted on time"],
+  "riskSignals": ["Wrong-question correction rate is below 50%"],
+  "taskCompletion": { "completed": 8, "total": 10, "rate": 80, "comment": "Most tasks are completed." },
+  "videoLearning": { "completedVideos": 6, "totalVideos": 7, "averageProgress": 92, "comment": "Video learning is consistent." },
+  "practiceBehavior": { "answeredCount": 42, "wrongCorrectionRate": 45, "comment": "Correction needs follow-up." },
+  "teacherAdvice": ["Publish a wrong-question correction task."],
+  "studentAdvice": ["Redo wrong questions after reviewing the related knowledge point."]
+}

@@ -1,0 +1,17 @@
+{
+  "summary": "The student has stable basic mastery but needs targeted review on weak knowledge points.",
+  "masteryLevel": "GOOD",
+  "scoreOverview": { "score": 82, "classAverage": 76, "trend": "UP" },
+  "strengths": ["Chapter 1 accuracy is high", "Video completion is stable"],
+  "weaknesses": ["Knowledge point 3 has repeated mistakes"],
+  "chapterAnalysis": [
+    { "chapterId": 1, "chapterName": "Chapter 1", "rate": 88, "level": "掌握优秀", "advice": "Use harder extension questions." }
+  ],
+  "knowledgePointAnalysis": [
+    { "knowledgePointId": 3, "name": "Knowledge Point 3", "rate": 55, "level": "掌握薄弱", "advice": "Review examples and complete easy practice first." }
+  ],
+  "wrongQuestionAdvice": ["Redo high-frequency wrong questions after reviewing notes."],
+  "practicePlan": [
+    { "knowledgePointId": 3, "difficulty": "EASY", "questionCount": 10, "reason": "Accuracy is below 60%." }
+  ]
+}

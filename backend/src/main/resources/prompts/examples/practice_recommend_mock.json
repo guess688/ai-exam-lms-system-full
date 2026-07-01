@@ -1,0 +1,18 @@
+{
+  "summary": "Focus on weak knowledge points first, then add medium transfer practice.",
+  "recommendedKnowledgePoints": [
+    { "knowledgePointId": 7, "name": "Knowledge Point 7", "priority": "HIGH", "reason": "Accuracy is below 60% and appears in wrong-question ranking." }
+  ],
+  "difficultyPlan": [
+    { "difficulty": "EASY", "questionCount": 8, "reason": "Rebuild prerequisite concepts." },
+    { "difficulty": "MEDIUM", "questionCount": 6, "reason": "Practice transfer after basics." }
+  ],
+  "questionTypePlan": [
+    { "type": "SINGLE", "questionCount": 6 },
+    { "type": "MULTIPLE", "questionCount": 4 }
+  ],
+  "dailyPracticePlan": [
+    { "day": 1, "title": "Weak point basics", "estimatedMinutes": 20, "knowledgePointIds": [7], "target": "Reach 70% accuracy." }
+  ],
+  "reviewAdvice": ["Review explanations before retrying wrong questions."]
+}

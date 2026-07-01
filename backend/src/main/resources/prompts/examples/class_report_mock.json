@@ -1,0 +1,17 @@
+{
+  "summary": "The class performs well on basic questions but has common gaps in transfer tasks.",
+  "scoreOverview": { "averageScore": 76, "highestScore": 98, "lowestScore": 42, "passRate": 82, "excellentRate": 18 },
+  "weakChapters": [
+    { "chapterId": 2, "chapterName": "Chapter 2", "averageRate": 58, "rank": 1, "teachingAdvice": "Use wrong-question examples for reteaching." }
+  ],
+  "weakKnowledgePoints": [
+    { "knowledgePointId": 7, "name": "Knowledge Point 7", "averageRate": 49, "rank": 1, "practiceAdvice": "Assign 15 easy-to-medium questions." }
+  ],
+  "commonMistakes": [
+    { "questionId": 101, "wrongCount": 20, "reason": "Students confuse two similar concepts.", "reviewAdvice": "Compare definitions and use a contrast table." }
+  ],
+  "difficultyPerformance": [
+    { "difficulty": "HARD", "rate": 42, "advice": "Add guided examples before extension practice." }
+  ],
+  "teachingSuggestions": ["Review Chapter 2 first, then assign targeted practice."]
+}

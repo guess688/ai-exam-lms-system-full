@@ -1,0 +1,28 @@
+{
+  "type": "object",
+  "properties": {
+    "student": {
+      "type": "object",
+      "properties": {
+        "anonymousId": { "type": "string" },
+        "gradeName": { "type": "string" }
+      }
+    },
+    "exam": {
+      "type": "object",
+      "properties": {
+        "examId": { "type": "integer" },
+        "score": { "type": "number" },
+        "classAverage": { "type": "number" },
+        "trend": { "type": "string" }
+      }
+    },
+    "chapterMastery": { "type": "array" },
+    "knowledgeMastery": { "type": "array" },
+    "wrongQuestions": { "type": "array" },
+    "difficultyPerformance": { "type": "array" },
+    "taskRecords": { "type": "array" },
+    "videoProgress": { "type": "array" },
+    "practiceHistory": { "type": "array" }
+  }
+}

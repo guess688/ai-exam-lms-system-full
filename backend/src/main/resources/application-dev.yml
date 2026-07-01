@@ -1,0 +1,128 @@
+﻿server:
+  port: 8080 # 鍏佽绔彛鍙?
+spring:
+  main:
+    # 鍏抽棴banner
+    banner-mode: console
+    # 鍏佽寰幆寮曠敤
+    allow-circular-references: true
+  # mysql閰嶇疆
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/db_exam?useSSL=false&serverTimezone=Asia/Shanghai&characterEncoding=utf8
+    username: root
+    password: ${MYSQL_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  # redis閰嶇疆
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    # password:
+    timeout: 10s
+    lettuce: # Redis杩炴帴姹犻厤缃?
+      pool:
+        # 杩炴帴姹犳渶澶ц繛鎺ユ暟 榛樿8 锛岃礋鏁拌〃绀烘病鏈夐檺鍒?
+        max-active: 8
+        # 杩炴帴姹犳渶澶ч樆濉炵瓑寰呮椂闂达紙浣跨敤璐熷€艰〃绀烘病鏈夐檺鍒讹級 榛樿-1
+        max-wait: -1
+        # 杩炴帴姹犱腑鐨勬渶澶х┖闂茶繛鎺?榛樿8
+        max-idle: 8
+        # 杩炴帴姹犱腑鐨勬渶灏忕┖闂茶繛鎺?榛樿0
+        min-idle: 0
+  servlet:
+    multipart:
+      max-file-size: 5MB
+#MybatisPlus閰嶇疆
+mybatis-plus:
+  global-config:
+    # 鍏抽棴banner
+    banner: false
+    db-config:
+      # 閫昏緫鍒犻櫎閰嶇疆
+      logic-not-delete-value: 0  # 鏈垹闄ゅ€?
+      logic-delete-value: 1      # 宸插垹闄ゅ€?
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case:
+  type-aliases-package: cn.org.alan.exam.model
+
+#jwt閰嶇疆 瀵嗛挜銆佽繃鏈熸椂闂淬€佹鏌ユ槸鍚﹀揩鍒版湡鏃堕棿
+jwt:
+  secret: ${JWT_SECRET:change_me_to_a_long_random_secret}
+  expiration: 1800000 # 30鍒嗛挓锛屽崟浣嶄负姣 token杩囨湡鏃堕棿
+  refreshThreshold: 900000  # 15鍒嗛挓锛屽崟浣嶄负姣 鍒ゆ柇鏄惁鍓﹛x鍒嗛挓杩囨湡
+
+# 闃块噷浜憃ss鏂囦欢瀛樺偍鏈嶅姟
+oss:
+  endpoint: https://oss-cn-beijing.aliyuncs.com
+  access-key-id: ${ALIYUN_ACCESS_KEY_ID:}
+  access-key-secret: ${ALIYUN_ACCESS_KEY_SECRET:}
+  bucket-name: online-exam-system-backend
+
+# Minio鏈湴鏂囦欢瀛樺偍鏈嶅姟
+minio:
+  endpoint: http://127.0.0.1:9000 # minio鏈嶅姟鍦板潃
+  accesskey: ${MINIO_ACCESS_KEY:}
+  secretKey: ${MINIO_SECRET_KEY:}
+  bucket: online-exam #妗跺悕
+
+# Coze Api
+coze:
+  api:
+    base-url: https://api.coze.cn
+    token: ${COZE_TOKEN:}
+    bot: ${COZE_BOT_ID:}
+
+# Dify Api
+dify:
+  base-url: "https://api.dify.ai/v1/chat-messages"
+  api-key: ${DIFY_API_KEY:}
+
+# llm 澶ц瑷€妯″瀷閰嶇疆
+llm:
+  api-key: ${LLM_API_KEY:}
+  base-url: "https://api.siliconflow.cn/v1"
+  model: "deepseek-ai/DeepSeek-V3"
+
+# embedding 妯″瀷閰嶇疆
+embedding:
+  api-key: ${EMBEDDING_API_KEY:}
+  base-url: "https://api.siliconflow.cn/v1/embeddings"
+  model: "BAAI/bge-large-zh-v1.5"
+
+# Milvus鍚戦噺鏁版嵁搴撻厤缃?
+milvus:
+  username: root
+  password: ${MILVUS_PASSWORD:}
+  host: 192.168.49.130
+  port: 19530
+
+# 鏃ュ織閰嶇疆
+ai:
+  provider: ${AI_PROVIDER:mock}
+  baseUrl: ${AI_BASE_URL:https://api.openai.com/v1}
+  apiKey: ${AI_API_KEY:}
+  model: ${AI_MODEL:gpt-4o-mini}
+  enabled: ${AI_ENABLED:false}
+  mockEnabled: ${AI_MOCK_ENABLED:true}
+  questionGeneratorServiceUrl: ${AI_QUESTION_SERVICE_URL:}
+
+logging:
+  level:
+    root: info
+    com.example: debug
+
+#鑷畾涔夐厤缃?
+online-exam:
+  chat-platform:
+    type: coze #ai璋冪敤鏂瑰紡閰嶇疆 coze銆乴lm銆乨ify
+  storage:
+    type: minio # 瀛樺偍鏂瑰紡鐨勯厤缃?aliyun銆乵inio
+  login:
+    captcha:
+      enabled: true #鏄惁鍚敤楠岃瘉鐮佺櫥褰?
+  auto-scoring:
+    enabled: true #鏄惁鍚敤AI鑷姩闃呭嵎鍔熻兘
+system:
+  register:
+    enabled: true  # 鎺у埗鏄惁寮€鏀炬敞鍐屽姛鑳?

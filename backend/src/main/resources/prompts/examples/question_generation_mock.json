@@ -1,0 +1,25 @@
+{
+  "summary": "Generated 2 candidate questions for teacher review.",
+  "needTeacherReview": true,
+  "questions": [
+    {
+      "type": "SINGLE",
+      "quType": 1,
+      "difficulty": "MEDIUM",
+      "courseId": 1,
+      "chapterId": 2,
+      "knowledgePointId": 3,
+      "content": "Which statement best describes this knowledge point?",
+      "options": [
+        { "label": "A", "content": "Correct concept description", "isRight": true },
+        { "label": "B", "content": "Plausible but incomplete description", "isRight": false },
+        { "label": "C", "content": "Unrelated description", "isRight": false },
+        { "label": "D", "content": "Opposite description", "isRight": false }
+      ],
+      "answer": ["A"],
+      "analysis": "Option A accurately matches the concept definition and application condition."
+    }
+  ],
+  "reviewStatus": "PENDING",
+  "reviewSavedCount": 1
+}

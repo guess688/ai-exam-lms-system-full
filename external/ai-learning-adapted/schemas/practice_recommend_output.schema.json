@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "required": ["summary", "recommendedKnowledgePoints", "difficultyPlan", "questionTypePlan", "dailyPracticePlan"],
+  "properties": {
+    "summary": { "type": "string" },
+    "recommendedKnowledgePoints": { "type": "array" },
+    "difficultyPlan": { "type": "array" },
+    "questionTypePlan": { "type": "array" },
+    "dailyPracticePlan": { "type": "array" },
+    "reviewAdvice": { "type": "array" }
+  }
+}

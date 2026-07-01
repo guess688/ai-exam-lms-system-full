@@ -1,0 +1,9 @@
+{
+  "summary": "The student has good overall mastery and should focus on one weak knowledge point.",
+  "masteryLevel": "GOOD",
+  "strengths": ["Stable chapter completion", "Good video progress"],
+  "weaknesses": ["Repeated mistakes on Knowledge Point 7"],
+  "practicePlan": [
+    { "knowledgePointId": 7, "difficulty": "EASY", "questionCount": 8, "reason": "Accuracy below 60%." }
+  ]
+}

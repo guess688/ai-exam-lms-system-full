@@ -1,0 +1,23 @@
+{
+  "summary": "Generated 1 candidate questions.",
+  "needTeacherReview": true,
+  "questions": [
+    {
+      "type": "MULTIPLE",
+      "quType": 2,
+      "difficulty": "MEDIUM",
+      "courseId": 1,
+      "chapterId": 2,
+      "knowledgePointId": 3,
+      "content": "Mock generated question 1.",
+      "options": [
+        { "label": "A", "content": "Correct option", "isRight": true },
+        { "label": "B", "content": "Plausible distractor", "isRight": false },
+        { "label": "C", "content": "Another correct option", "isRight": true },
+        { "label": "D", "content": "Incorrect option", "isRight": false }
+      ],
+      "answer": ["A", "C"],
+      "analysis": "Mock explanation for teacher review."
+    }
+  ]
+}

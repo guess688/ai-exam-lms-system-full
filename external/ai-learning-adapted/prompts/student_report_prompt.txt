@@ -1,0 +1,1 @@
+Generate a student learning report from exam accuracy, chapter mastery, knowledge point mastery, wrong questions, practice history, video progress, and task completion. Output summary, masteryLevel, strengths, weaknesses, chapterAnalysis, knowledgePointAnalysis, wrongQuestionAdvice, and practicePlan as JSON.

@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "required": ["needTeacherReview", "questions"],
+  "properties": {
+    "summary": { "type": "string" },
+    "needTeacherReview": { "const": true },
+    "questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "difficulty", "content", "options", "answer", "analysis"],
+        "properties": {
+          "type": { "enum": ["SINGLE", "MULTIPLE", "INDEFINITE", "JUDGE"] },
+          "quType": { "enum": [1, 2, 3, 4] },
+          "difficulty": { "enum": ["EASY", "MEDIUM", "HARD"] },
+          "courseId": { "type": ["integer", "null"] },
+          "chapterId": { "type": ["integer", "null"] },
+          "knowledgePointId": { "type": ["integer", "null"] },
+          "content": { "type": "string" },
+          "options": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["label", "content", "isRight"],
+              "properties": {
+                "label": { "type": "string" },
+                "content": { "type": "string" },
+                "isRight": { "type": "boolean" }
+              }
+            }
+          },
+          "answer": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "array", "items": { "type": "string" } }
+            ]
+          },
+          "analysis": { "type": "string" }
+        }
+      }
+    }
+  }
+}

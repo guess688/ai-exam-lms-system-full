@@ -1,0 +1,51 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+deploy/.env
+deploy/.env.*
+!deploy/.env.example
+
+# Uploads and runtime data
+deploy/uploads/
+uploads/
+.runtime/
+data/
+tmp/
+temp/
+
+# Backend build outputs
+backend/target/
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Frontend dependencies and build outputs
+frontend/node_modules/
+node_modules/
+frontend/dist/
+dist/
+
+# Logs and JVM crash dumps
+logs/
+backend/logs/
+frontend/logs/
+*.log
+backend/hs_err_pid*.log
+backend/replay_pid*.log
+
+# IDE and OS files
+.idea/
+**/.idea/
+.vscode/
+*.iml
+.DS_Store
+Thumbs.db
+
+# Local reference clones
+references/
+
+# Local Docker overrides
+docker-compose.override.yml

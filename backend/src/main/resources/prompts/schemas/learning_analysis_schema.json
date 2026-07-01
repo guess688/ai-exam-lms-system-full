@@ -1,0 +1,14 @@
+{
+  "studentReport": {
+    "required": ["summary", "masteryLevel", "strengths", "weaknesses", "chapterAnalysis", "knowledgePointAnalysis", "practicePlan"]
+  },
+  "classReport": {
+    "required": ["summary", "scoreOverview", "weakChapters", "weakKnowledgePoints", "commonMistakes", "teachingSuggestions"]
+  },
+  "practiceRecommend": {
+    "required": ["summary", "recommendedKnowledgePoints", "difficultyPlan", "questionTypePlan", "dailyPracticePlan"]
+  },
+  "learningBehavior": {
+    "required": ["behaviorLevel", "summary", "positiveSignals", "riskSignals", "taskCompletion", "videoLearning", "practiceBehavior"]
+  }
+}

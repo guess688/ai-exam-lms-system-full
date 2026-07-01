@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.org.alan.exam.mapper.ExamAnalysisMapper">
+
+    <select id="selectStudentChapterAnalysis" resultType="cn.org.alan.exam.model.vo.analysis.MasteryAnalysisVO">
+        select
+        q.chapter_id as id,
+        coalesce(cc.title, '未关联章节') as name,
+        count(eq.id) as total,
+        sum(case when eqa.is_right = 1 then 1 else 0 end) as correct,
+        round(sum(case when eqa.is_right = 1 then 1 else 0 end) * 100.0 / count(eq.id), 2) as rate
+        from t_exam_question eq
+        join t_question q on q.id = eq.question_id and q.is_deleted = 0
+        left join t_course_chapter cc on cc.id = q.chapter_id
+        left join t_exam_qu_answer eqa on eqa.exam_id = eq.exam_id
+        and eqa.question_id = eq.question_id
+        and eqa.user_id = #{userId}
+        where eq.exam_id = #{examId}
+        group by q.chapter_id, cc.title
+        order by rate desc, total desc
+    </select>
+
+    <select id="selectStudentKnowledgeAnalysis" resultType="cn.org.alan.exam.model.vo.analysis.MasteryAnalysisVO">
+        select
+        q.knowledge_point_id as id,
+        coalesce(kp.name, '未关联知识点') as name,
+        count(eq.id) as total,
+        sum(case when eqa.is_right = 1 then 1 else 0 end) as correct,
+        round(sum(case when eqa.is_right = 1 then 1 else 0 end) * 100.0 / count(eq.id), 2) as rate
+        from t_exam_question eq
+        join t_question q on q.id = eq.question_id and q.is_deleted = 0
+        left join t_knowledge_point kp on kp.id = q.knowledge_point_id
+        left join t_exam_qu_answer eqa on eqa.exam_id = eq.exam_id
+        and eqa.question_id = eq.question_id
+        and eqa.user_id = #{userId}
+        where eq.exam_id = #{examId}
+        group by q.knowledge_point_id, kp.name
+        order by rate desc, total desc
+    </select>
+
+    <select id="selectClassChapterAnalysis" resultType="cn.org.alan.exam.model.vo.analysis.MasteryAnalysisVO">
+        select
+        q.chapter_id as id,
+        coalesce(cc.title, '未关联章节') as name,
+        count(eq.id) as total,
+        sum(case when eqa.is_right = 1 then 1 else 0 end) as correct,
+        round(sum(case when eqa.is_right = 1 then 1 else 0 end) * 100.0 / count(eq.id), 2) as rate
+        from t_exam_question eq
+        join t_question q on q.id = eq.question_id and q.is_deleted = 0
+        left join t_course_chapter cc on cc.id = q.chapter_id
+        join t_user_exams_score ues on ues.exam_id = eq.exam_id
+        and ues.state = 1
+        and ues.whether_mark in (-1, 1)
+        join t_user u on u.id = ues.user_id and u.grade_id = #{gradeId}
+        left join t_exam_qu_answer eqa on eqa.exam_id = eq.exam_id
+        and eqa.question_id = eq.question_id
+        and eqa.user_id = ues.user_id
+        where eq.exam_id = #{examId}
+        group by q.chapter_id, cc.title
+        order by rate desc, total desc
+    </select>
+
+    <select id="selectClassKnowledgeAnalysis" resultType="cn.org.alan.exam.model.vo.analysis.MasteryAnalysisVO">
+        select
+        q.knowledge_point_id as id,
+        coalesce(kp.name, '未关联知识点') as name,
+        count(eq.id) as total,
+        sum(case when eqa.is_right = 1 then 1 else 0 end) as correct,
+        round(sum(case when eqa.is_right = 1 then 1 else 0 end) * 100.0 / count(eq.id), 2) as rate
+        from t_exam_question eq
+        join t_question q on q.id = eq.question_id and q.is_deleted = 0
+        left join t_knowledge_point kp on kp.id = q.knowledge_point_id
+        join t_user_exams_score ues on ues.exam_id = eq.exam_id
+        and ues.state = 1
+        and ues.whether_mark in (-1, 1)
+        join t_user u on u.id = ues.user_id and u.grade_id = #{gradeId}
+        left join t_exam_qu_answer eqa on eqa.exam_id = eq.exam_id
+        and eqa.question_id = eq.question_id
+        and eqa.user_id = ues.user_id
+        where eq.exam_id = #{examId}
+        group by q.knowledge_point_id, kp.name
+        order by rate desc, total desc
+    </select>
+
+    <select id="selectWrongQuestions" resultType="cn.org.alan.exam.model.vo.analysis.WrongQuestionAnalysisVO">
+        select
+        q.id as questionId,
+        q.content as title,
+        coalesce(cc.title, '未关联章节') as chapterName,
+        coalesce(kp.name, '未关联知识点') as knowledgePointName,
+        coalesce(q.difficulty, 'MEDIUM') as difficulty,
+        count(eq.id) as total,
+        sum(case when eqa.is_right = 1 then 0 else 1 end) as wrong,
+        round(sum(case when eqa.is_right = 1 then 0 else 1 end) * 100.0 / count(eq.id), 2) as rate
+        from t_exam_question eq
+        join t_question q on q.id = eq.question_id and q.is_deleted = 0
+        left join t_course_chapter cc on cc.id = q.chapter_id
+        left join t_knowledge_point kp on kp.id = q.knowledge_point_id
+        join t_user_exams_score ues on ues.exam_id = eq.exam_id
+        and ues.state = 1
+        and ues.whether_mark in (-1, 1)
+        join t_user u on u.id = ues.user_id and u.grade_id = #{gradeId}
+        left join t_exam_qu_answer eqa on eqa.exam_id = eq.exam_id
+        and eqa.question_id = eq.question_id
+        and eqa.user_id = ues.user_id
+        where eq.exam_id = #{examId}
+        group by q.id, q.content, cc.title, kp.name, q.difficulty
+        having wrong > 0
+        order by wrong desc, rate desc, q.id asc
+        limit 20
+    </select>
+
+    <select id="selectDifficultyAnalysis" resultType="cn.org.alan.exam.model.vo.analysis.DifficultyAnalysisVO">
+        select
+        coalesce(q.difficulty, 'MEDIUM') as difficulty,
+        case coalesce(q.difficulty, 'MEDIUM')
+        when 'EASY' then '简单'
+        when 'HARD' then '困难'
+        else '中等'
+        end as name,
+        count(eq.id) as total,
+        sum(case when eqa.is_right = 1 then 1 else 0 end) as correct,
+        round(sum(case when eqa.is_right = 1 then 1 else 0 end) * 100.0 / count(eq.id), 2) as rate
+        from t_exam_question eq
+        join t_question q on q.id = eq.question_id and q.is_deleted = 0
+        <choose>
+            <when test="userId != null">
+                left join t_exam_qu_answer eqa on eqa.exam_id = eq.exam_id
+                and eqa.question_id = eq.question_id
+                and eqa.user_id = #{userId}
+            </when>
+            <otherwise>
+                join t_user_exams_score ues on ues.exam_id = eq.exam_id
+                and ues.state = 1
+                and ues.whether_mark in (-1, 1)
+                join t_user u on u.id = ues.user_id and u.grade_id = #{gradeId}
+                left join t_exam_qu_answer eqa on eqa.exam_id = eq.exam_id
+                and eqa.question_id = eq.question_id
+                and eqa.user_id = ues.user_id
+            </otherwise>
+        </choose>
+        where eq.exam_id = #{examId}
+        group by coalesce(q.difficulty, 'MEDIUM')
+        order by field(coalesce(q.difficulty, 'MEDIUM'), 'EASY', 'MEDIUM', 'HARD')
+    </select>
+
+    <select id="selectClassScoreChart" resultType="cn.org.alan.exam.model.vo.analysis.ChartDataVO">
+        select
+        coalesce(u.real_name, u.user_name) as name,
+        coalesce(ues.user_score, 0) as value,
+        case when e.gross_score > 0 then round(coalesce(ues.user_score, 0) * 100.0 / e.gross_score, 2) else 0 end as rate,
+        e.gross_score as total,
+        coalesce(ues.user_score, 0) as correct
+        from t_user_exams_score ues
+        join t_user u on u.id = ues.user_id and u.grade_id = #{gradeId}
+        join t_exam e on e.id = ues.exam_id
+        where ues.exam_id = #{examId}
+        and ues.state = 1
+        and ues.whether_mark in (-1, 1)
+        order by coalesce(ues.user_score, 0) desc, u.id asc
+    </select>
+
+    <select id="selectScoreSegmentChart" resultType="cn.org.alan.exam.model.vo.analysis.ChartDataVO">
+        select
+        segment.name as name,
+        count(*) as value,
+        round(avg(segment.score_rate), 2) as rate,
+        count(*) as total,
+        sum(case when segment.score_rate >= 60 then 1 else 0 end) as correct
+        from (
+        select
+        case
+        when e.gross_score is null or e.gross_score = 0 then '无总分'
+        when coalesce(ues.user_score, 0) * 100.0 / e.gross_score >= 85 then '85%-100%'
+        when coalesce(ues.user_score, 0) * 100.0 / e.gross_score >= 70 then '70%-84%'
+        when coalesce(ues.user_score, 0) * 100.0 / e.gross_score >= 60 then '60%-69%'
+        else '0%-59%'
+        end as name,
+        case when e.gross_score > 0 then coalesce(ues.user_score, 0) * 100.0 / e.gross_score else 0 end as score_rate
+        from t_user_exams_score ues
+        join t_user u on u.id = ues.user_id and u.grade_id = #{gradeId}
+        join t_exam e on e.id = ues.exam_id
+        where ues.exam_id = #{examId}
+        and ues.state = 1
+        and ues.whether_mark in (-1, 1)
+        ) segment
+        group by segment.name
+        order by field(segment.name, '0%-59%', '60%-69%', '70%-84%', '85%-100%', '无总分')
+    </select>
+
+    <select id="selectStudentScoreTrend" resultType="cn.org.alan.exam.model.vo.analysis.ChartDataVO">
+        select
+        e.title as name,
+        coalesce(ues.user_score, 0) as value,
+        case when e.gross_score > 0 then round(coalesce(ues.user_score, 0) * 100.0 / e.gross_score, 2) else 0 end as rate,
+        e.gross_score as total,
+        coalesce(ues.user_score, 0) as correct
+        from t_user_exams_score ues
+        join t_exam e on e.id = ues.exam_id and e.is_deleted = 0
+        where ues.user_id = #{userId}
+        and ues.state = 1
+        and ues.whether_mark in (-1, 1)
+        order by coalesce(ues.limit_time, ues.create_time) asc, e.id asc
+    </select>
+</mapper>

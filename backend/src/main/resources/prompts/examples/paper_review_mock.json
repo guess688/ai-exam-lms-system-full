@@ -1,0 +1,8 @@
+{
+  "overview": "The paper shows good basic mastery and weak transfer performance.",
+  "scoreDistribution": "Most students are in the 70-85 range.",
+  "chapterReview": ["Chapter 2 needs reteaching."],
+  "knowledgePointReview": ["Knowledge Point 7 has the lowest accuracy."],
+  "wrongQuestionReview": ["Question 101 should be explained first."],
+  "nextSteps": ["Assign targeted practice and review wrong questions."]
+}

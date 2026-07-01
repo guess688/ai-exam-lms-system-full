@@ -1,0 +1,50 @@
+USE db_exam;
+
+CREATE TABLE IF NOT EXISTS `t_ai_call_log` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'AI call log ID',
+  `feature_type` varchar(64) NOT NULL COMMENT 'AI feature type',
+  `provider` varchar(64) DEFAULT NULL COMMENT 'AI provider',
+  `model` varchar(128) DEFAULT NULL COMMENT 'AI model',
+  `mock_enabled` tinyint(1) NOT NULL DEFAULT 1 COMMENT 'Mock mode flag',
+  `success` tinyint(1) NOT NULL DEFAULT 0 COMMENT 'Success flag',
+  `duration_ms` bigint DEFAULT NULL COMMENT 'Duration in milliseconds',
+  `request_time` datetime DEFAULT NULL COMMENT 'Request time',
+  `request_summary` text COMMENT 'Sanitized request summary',
+  `prompt_template` text COMMENT 'Prompt template',
+  `raw_response` longtext COMMENT 'Raw AI response JSON',
+  `parsed_result` longtext COMMENT 'Parsed AI result',
+  `error_message` varchar(1000) DEFAULT NULL COMMENT 'Error message',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Create time',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update time',
+  PRIMARY KEY (`id`),
+  KEY `idx_ai_call_feature` (`feature_type`),
+  KEY `idx_ai_call_success` (`success`),
+  KEY `idx_ai_call_request_time` (`request_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='AI service call log';
+
+CREATE TABLE IF NOT EXISTS `t_ai_question_review` (
+  `id` int NOT NULL AUTO_INCREMENT COMMENT 'Review ID',
+  `ai_call_log_id` int DEFAULT NULL COMMENT 'AI call log ID',
+  `repo_id` int DEFAULT NULL COMMENT 'Question repo ID',
+  `course_id` int DEFAULT NULL COMMENT 'Course ID',
+  `chapter_id` int DEFAULT NULL COMMENT 'Chapter ID',
+  `knowledge_point_id` int DEFAULT NULL COMMENT 'Knowledge point ID',
+  `qu_type` int DEFAULT NULL COMMENT 'Question type code: 1 single, 2 multiple, 3 judge, 4 indefinite',
+  `question_type` varchar(32) DEFAULT NULL COMMENT 'Question type text',
+  `difficulty` varchar(16) DEFAULT NULL COMMENT 'EASY/MEDIUM/HARD',
+  `content` text COMMENT 'Question content',
+  `options_json` longtext COMMENT 'Options JSON compatible with t_option',
+  `answer_json` text COMMENT 'Answer JSON',
+  `analysis` text COMMENT 'Question analysis',
+  `raw_json` longtext COMMENT 'Raw single question JSON',
+  `status` varchar(32) NOT NULL DEFAULT 'PENDING' COMMENT 'PENDING/APPROVED/REJECTED',
+  `review_comment` varchar(1000) DEFAULT NULL COMMENT 'Review comment',
+  `reviewer_id` int DEFAULT NULL COMMENT 'Reviewer ID',
+  `create_user_id` int DEFAULT NULL COMMENT 'Creator ID',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT 'Create time',
+  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Update time',
+  PRIMARY KEY (`id`),
+  KEY `idx_ai_question_review_log` (`ai_call_log_id`),
+  KEY `idx_ai_question_review_scope` (`course_id`, `chapter_id`, `knowledge_point_id`),
+  KEY `idx_ai_question_review_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='AI generated question review queue';

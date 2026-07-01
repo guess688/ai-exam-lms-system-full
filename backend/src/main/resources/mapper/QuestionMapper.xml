@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.org.alan.exam.mapper.QuestionMapper">
+
+    <resultMap id="singleQuestion" autoMapping="true" type="cn.org.alan.exam.model.vo.question.QuestionVO">
+        <id column="id" property="id"/>
+        <collection property="options" autoMapping="true" column="id" ofType="cn.org.alan.exam.model.entity.Option"
+                    select="cn.org.alan.exam.mapper.OptionMapper.selectAllByQuestionId"/>
+    </resultMap>
+
+    <resultMap id="singleExercise" autoMapping="true" type="cn.org.alan.exam.model.vo.question.QuestionVO">
+        <id column="id" property="id"/>
+        <collection property="options" autoMapping="true" column="id" ofType="cn.org.alan.exam.model.entity.Option"
+                    select="cn.org.alan.exam.mapper.OptionMapper.selectOptionByqId"/>
+    </resultMap>
+
+    <!-- 根据试题id获取单题详情 一对多查询 -->
+    <select id="selectSingle" resultMap="singleQuestion">
+        select q.id,
+        q.content,
+        q.image,
+        q.analysis,
+        q.qu_type,
+        q.repo_id,
+        q.course_id as courseId,
+        c.name as courseName,
+        q.chapter_id as chapterId,
+        cc.title as chapterTitle,
+        q.knowledge_point_id as knowledgePointId,
+        kp.name as knowledgePointName,
+        q.difficulty,
+        r.title as repoTitle
+        from t_question as q
+        join t_repo as r on q.repo_id = r.id
+        left join t_course as c on q.course_id = c.id
+        left join t_course_chapter as cc on q.chapter_id = cc.id
+        left join t_knowledge_point as kp on q.knowledge_point_id = kp.id
+        where q.id = #{id}
+    </select>
+
+    <!-- 获取试题Id并判断用户是否做过该题 -->
+    <select id="selectQuestionSheet" resultType="cn.org.alan.exam.model.vo.exercise.QuestionSheetVO">
+        select q.id as quId,q.qu_type,q.repo_id,IF(er.id IS NULL, 0, 1) AS exercised,
+        er.is_right AS isRight from t_question as q left join
+        t_exercise_record as er on er.repo_id = q.repo_id and er.question_id = q.id and er.user_id = #{userId}
+        <trim prefix="where">
+            q.repo_id = #{repoId}
+            <if test="quType != null and quType != 0">
+                and q.qu_type = #{quType}
+            </if>
+            <if test="true">
+                and q.is_deleted = 0
+            </if>
+        </trim>
+    </select>
+
+    <!-- 查询试题详细信息 -->
+    <select id="selectDetail" resultMap="singleExercise">
+        select q.id,
+        q.content,
+        q.image,
+        q.repo_id,
+        q.qu_type,
+        q.course_id as courseId,
+        c.name as courseName,
+        q.chapter_id as chapterId,
+        cc.title as chapterTitle,
+        q.knowledge_point_id as knowledgePointId,
+        kp.name as knowledgePointName,
+        q.difficulty,
+        r.title as repoTitle
+        from t_question as q
+        join t_repo as r on q.repo_id = r.id
+        left join t_course as c on q.course_id = c.id
+        left join t_course_chapter as cc on q.chapter_id = cc.id
+        left join t_knowledge_point as kp on q.knowledge_point_id = kp.id
+        where q.id = #{id}
+    </select>
+
+    <!-- 分页查询试题 -->
+    <select id="selectQuestionPage" resultType="cn.org.alan.exam.model.vo.question.QuestionVO">
+        select
+        q.id,
+        q.qu_type ,
+        q.content,
+        q.course_id as courseId,
+        c.name as courseName,
+        q.chapter_id as chapterId,
+        cc.title as chapterTitle,
+        q.knowledge_point_id as knowledgePointId,
+        kp.name as knowledgePointName,
+        q.difficulty,
+        r.title as repoTitle,
+        q.create_time
+        from t_question q
+        join t_repo r on q.repo_id = r.id
+        left join t_course c on q.course_id = c.id
+        left join t_course_chapter cc on q.chapter_id = cc.id
+        left join t_knowledge_point kp on q.knowledge_point_id = kp.id
+        <trim prefixOverrides="and" prefix="where">
+            q.is_deleted = 0
+            <if test='title != null and title != ""'>
+                and q.content like concat('%',#{title},'%')
+            </if>
+            <if test='repoId != null and repoId != 0'>
+                and q.repo_id = #{repoId}
+            </if>
+            <if test='type != null and type != 0'>
+                and q.qu_type = #{type}
+            </if>
+            <if test='courseId != null and courseId != 0'>
+                and q.course_id = #{courseId}
+            </if>
+            <if test='chapterId != null and chapterId != 0'>
+                and q.chapter_id = #{chapterId}
+            </if>
+            <if test='knowledgePointId != null and knowledgePointId != 0'>
+                and q.knowledge_point_id = #{knowledgePointId}
+            </if>
+            <if test='difficulty != null and difficulty != ""'>
+                and q.difficulty = #{difficulty}
+            </if>
+            <if test='roleCode == 2'>
+                and q.user_id = #{userId}
+            </if>
+        </trim>
+    </select>
+
+</mapper>

@@ -1,0 +1,1 @@
+Recommend practice by selecting weak knowledge points first, mapping recent accuracy to EASY/MEDIUM/HARD difficulty, and returning a daily plan with reasonable workload. Output recommendedKnowledgePoints, difficultyPlan, questionTypePlan, dailyPracticePlan, and reviewAdvice as JSON.

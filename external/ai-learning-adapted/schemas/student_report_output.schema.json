@@ -1,0 +1,11 @@
+{
+  "type": "object",
+  "required": ["summary", "masteryLevel", "strengths", "weaknesses", "practicePlan"],
+  "properties": {
+    "summary": { "type": "string" },
+    "masteryLevel": { "enum": ["EXCELLENT", "GOOD", "BASIC", "WEAK"] },
+    "strengths": { "type": "array" },
+    "weaknesses": { "type": "array" },
+    "practicePlan": { "type": "array" }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "behaviorLevel": "GOOD",
+  "positiveSignals": ["Tasks are usually completed", "Video progress is high"],
+  "riskSignals": ["Wrong question correction is low"],
+  "teacherAdvice": ["Publish a targeted wrong-question task"],
+  "studentAdvice": ["Review explanation before retrying"]
+}
