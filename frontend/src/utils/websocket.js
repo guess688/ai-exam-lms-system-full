@@ -10,10 +10,10 @@ import { getUserId,getGradeId,getRole } from './auth'
 import { Notification } from 'element-ui'
 import Vue from 'vue'
 import { isPreviewMode } from './preview'
+import { getWsBaseUrl } from './appConfig'
 
 // 定义 WebSocket 实例
 let socket
-const websocketPath = '/api/websocket'
 // eslint-disable-next-line no-unused-vars
 let isConnected = false
 let reconnectTimer
@@ -30,9 +30,17 @@ let isManuallyClosed = false // 标记是否是主动断开连接
 const EventBus = new Vue()
 
 function getWebSocketUrl() {
+  const wsBaseUrl = getWsBaseUrl()
+  if (/^wss?:\/\//i.test(wsBaseUrl)) {
+    return wsBaseUrl
+  }
+  if (/^https?:\/\//i.test(wsBaseUrl)) {
+    return wsBaseUrl.replace(/^http/i, window.location.protocol === 'https:' ? 'wss' : 'ws')
+  }
   const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
   const host = window.location.host
-  return `${protocol}//${host}${websocketPath}`
+  const path = wsBaseUrl.charAt(0) === '/' ? wsBaseUrl : `/${wsBaseUrl}`
+  return `${protocol}//${host}${path}`
 }
 
 // 连接 WebSocket

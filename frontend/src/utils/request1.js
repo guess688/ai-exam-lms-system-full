@@ -3,10 +3,11 @@ import { MessageBox, Message } from 'element-ui'
 import { Loading } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
+import { getApiBaseUrl } from '@/utils/appConfig'
 
 // 请求实例
 const instance = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  baseURL: getApiBaseUrl(),
   timeout: 60000
 })
 

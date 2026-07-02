@@ -58,6 +58,35 @@ RUN if [ -f /workspace/deploy/nginx/nginx.conf ]; then \
         '        proxy_set_header Upgrade $http_upgrade;' \
         '        proxy_set_header Connection "upgrade";' \
         '    }' \
+        '    location ~ ^(/docker-[0-9]+)$ {' \
+        '        return 302 $1/;' \
+        '    }' \
+        '    location ~ ^/docker-[0-9]+/api/websocket$ {' \
+        '        rewrite ^/docker-[0-9]+/api/websocket$ /websocket break;' \
+        '        proxy_pass http://backend:8080;' \
+        '        proxy_http_version 1.1;' \
+        '        proxy_set_header Host $host;' \
+        '        proxy_set_header X-Real-IP $remote_addr;' \
+        '        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' \
+        '        proxy_set_header X-Forwarded-Proto $scheme;' \
+        '        proxy_set_header Upgrade $http_upgrade;' \
+        '        proxy_set_header Connection "upgrade";' \
+        '    }' \
+        '    location ~ ^/docker-[0-9]+/api(?:/.*)?$ {' \
+        '        rewrite ^/docker-[0-9]+(/api(?:/.*)?)$ $1 break;' \
+        '        proxy_pass http://backend:8080;' \
+        '        proxy_http_version 1.1;' \
+        '        proxy_set_header Host $host;' \
+        '        proxy_set_header X-Real-IP $remote_addr;' \
+        '        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;' \
+        '        proxy_set_header X-Forwarded-Proto $scheme;' \
+        '        proxy_set_header Upgrade $http_upgrade;' \
+        '        proxy_set_header Connection "upgrade";' \
+        '    }' \
+        '    location ~ ^/docker-[0-9]+/(.*)$ {' \
+        '        rewrite ^/docker-[0-9]+/(.*)$ /$1 break;' \
+        '        try_files $uri $uri/ /index.html;' \
+        '    }' \
         '}' > /tmp/default.conf; \
     fi
 
@@ -65,6 +94,38 @@ FROM nginx:alpine
 
 COPY --from=builder /tmp/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/dist /usr/share/nginx/html
+
+RUN printf '%s\n' \
+      '#!/bin/sh' \
+      'set -eu' \
+      '' \
+      'BASE_PATH_VALUE="${BASE_PATH:-}"' \
+      'BASE_PATH_VALUE="$(printf "%s" "$BASE_PATH_VALUE" | tr -d "[:space:]")"' \
+      'if [ "$BASE_PATH_VALUE" = "/" ]; then' \
+      '  BASE_PATH_VALUE=""' \
+      'fi' \
+      'if [ -n "$BASE_PATH_VALUE" ]; then' \
+      '  case "$BASE_PATH_VALUE" in' \
+      '    /*) ;;' \
+      '    *) BASE_PATH_VALUE="/$BASE_PATH_VALUE" ;;' \
+      '  esac' \
+      '  while [ "${BASE_PATH_VALUE%/}" != "$BASE_PATH_VALUE" ]; do' \
+      '    BASE_PATH_VALUE="${BASE_PATH_VALUE%/}"' \
+      '  done' \
+      '  if [ "$BASE_PATH_VALUE" = "/" ]; then' \
+      '    BASE_PATH_VALUE=""' \
+      '  fi' \
+      'fi' \
+      '' \
+      'cat > /usr/share/nginx/html/app-config.js <<EOF' \
+      'window.__APP_CONFIG__ = {' \
+      '  BASE_PATH: "$BASE_PATH_VALUE",' \
+      '  API_BASE_URL: "$BASE_PATH_VALUE/api",' \
+      '  WS_BASE_URL: "$BASE_PATH_VALUE/api/websocket"' \
+      '};' \
+      'EOF' \
+      > /docker-entrypoint.d/99-generate-app-config.sh \
+    && chmod +x /docker-entrypoint.d/99-generate-app-config.sh
 
 EXPOSE 80
 

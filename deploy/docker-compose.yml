@@ -121,6 +121,8 @@ services:
     restart: always
     depends_on:
       - backend
+    environment:
+      BASE_PATH: ${BASE_PATH:-}
     ports:
       - "${APP_PORT}:80"
     networks:

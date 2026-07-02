@@ -35,6 +35,7 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { getToken } from "@/utils/auth";
+import { joinApiPath } from "@/utils/appConfig";
 
 export default {
   name: "RichTextEditor",
@@ -60,7 +61,7 @@ export default {
     },
     uploadUrl: {
       type: String,
-      default: process.env.VUE_APP_BASE_API + "/upload/image",
+      default: () => joinApiPath("/upload/image"),
     },
     acceptTypes: {
       type: String,

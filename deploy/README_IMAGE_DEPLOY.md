@@ -107,6 +107,43 @@ http://服务器IP:${APP_PORT}/
 
 如果网关不剥离前缀，需要额外做 `BASE_PATH` 适配。
 
+## 工程云 BASE_PATH 配置
+
+如果工程云访问地址是：
+
+```text
+http://域名/docker-10008
+```
+
+并且工程云网关不会剥离 `/docker-10008` 前缀，`deploy/.env` 设置为：
+
+```env
+APP_PORT=10008
+BASE_PATH=/docker-10008
+```
+
+如果工程云网关会剥离 `/docker-10008` 前缀，项目容器内仍按根路径运行，`deploy/.env` 设置为：
+
+```env
+APP_PORT=10008
+BASE_PATH=
+```
+
+`APP_PORT` 是容器对外映射端口；`BASE_PATH` 是浏览器 URL 前缀。二者互不替代，例如 `APP_PORT=10008` 只表示宿主机端口是 `10008`，不表示页面会自动挂到 `/docker-10008`。
+
+修改 `.env` 后，如果只是改 `BASE_PATH`，执行：
+
+```bash
+docker compose -f docker-compose.image.yml up -d --force-recreate frontend
+```
+
+如果改了前端代码或 `frontend/Dockerfile`，需要重新构建 frontend 镜像并重新导出 tar：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File deploy/build-images.ps1
+powershell -ExecutionPolicy Bypass -File deploy/save-images.ps1
+```
+
 ## 10. 后续修改配置
 
 修改 `deploy/.env` 后执行：
@@ -118,6 +155,7 @@ docker compose -f docker-compose.image.yml up -d --force-recreate backend fronte
 ## 11. 可以只改 .env 的配置
 
 - `APP_PORT`
+- `BASE_PATH`
 - `JWT_SECRET`
 - `AI_ENABLED`
 - `AI_MOCK_ENABLED`

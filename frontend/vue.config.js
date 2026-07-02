@@ -22,7 +22,7 @@ module.exports = {
    * You will need to set publicPath if you plan to deploy your site under a sub path,
    * for example GitHub Pages. If you plan to deploy your site to https://foo.github.io/bar/,
    * then publicPath should be set to "/bar/".
-   * In most cases please use '/' !!!
+   * Use relative assets so the same build can run at / or /docker-10008/.
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
 

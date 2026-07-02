@@ -276,6 +276,7 @@ import {
   updateCourseVideo
 } from '@/api/course'
 import { getToken } from '@/utils/auth'
+import { joinApiPath } from '@/utils/appConfig'
 
 export default {
   data() {
@@ -299,7 +300,7 @@ export default {
       materialDialogTitle: '新增资料',
       materialFormChapters: [],
       materialForm: this.emptyMaterialForm(),
-      uploadUrl: process.env.VUE_APP_BASE_API + '/upload/file',
+      uploadUrl: joinApiPath('/upload/file'),
       uploadHeaders: { Authorization: getToken() },
       tableHeaderStyle: {
         background: '#f2f3f4',
